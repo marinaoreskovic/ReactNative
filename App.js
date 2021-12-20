@@ -12,7 +12,7 @@ import {
 
 export default function App() {
   const [list, setList] = useState([]);
-  const [TextInput, setTextInput] = useState("");
+  const [textInput, setTextInput] = useState("");
   const [modalVisible, setMoodalVisible] = useState(false);
   const [itemSelected, setItemSelected] = useState({});
   const onAdd = () => {
@@ -27,18 +27,20 @@ export default function App() {
   };
   const onDelete = (id) => {
     setList(list.filter((item) => item.id != id));
+    setMoodalVisible(false);
   };
+  console.log(list, "soy list");
   return (
     <View style={styles.container}>
       <Modal
         visible={modalVisible}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={() => setMoodalVisible(false)}
       >
         <View
           style={{
-            backgroundColor: "rgba(0,0,0 0.5",
+            backgroundColor: "rgba(0,0,0 0.5)",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -47,7 +49,9 @@ export default function App() {
             style={{ backgroundColor: "white", width: "50%", height: "25%" }}
           >
             <Text>Estas seguro que deseas borrar {itemSelected.value}?</Text>
-            <View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
               <Button title="Si" onPress={() => onDelete(itemSelected.id)} />
               <Button title="No" onPress={() => setMoodalVisible(false)} />
             </View>
@@ -60,9 +64,10 @@ export default function App() {
           onChangeText={(text) => setTextInput(text)}
           style={styles.input}
         />
+
         <Button title="Add" onPress={() => onAdd()} />
       </View>
-      {list.lenght > 0 ? (
+      {list.length > 0 ? (
         <FlatList
           data={list}
           renderItem={(data) => (
@@ -75,10 +80,10 @@ export default function App() {
               <Button onPress={() => onHandlerModal(data.item)} title="X" />
             </View>
           )}
-          keyExtractor={(item = item.id)}
+          keyExtractor={(item) => item.id}
         />
       ) : (
-        <Text>No hay tareas</Text>
+        <Text> No hay tareas </Text>
       )}
     </View>
   );
@@ -86,9 +91,27 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
+    height: "100%",
+  },
+  containerInput: {
+    flexDirection: "row",
+    width: "100%",
+    height: "10%",
+    marginTop: "3%",
+    justifyContent: "space-around",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  input: {
+    borderBottomColor: "black",
+    borderBottomWidht: 5,
+    width: "70%",
+  },
+  containerItem: {
+    width: "90%",
+    alignSelf: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    marginVertical: "3%",
   },
 });
